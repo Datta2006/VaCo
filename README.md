@@ -132,5 +132,13 @@ python main.py
 | Balanced optimum       | Best compromise found by MBAT        |
 
 The algorithm gradually shifts from exploration → exploitation and converges to a **balanced VEC strategy**.
+## Team Members
+
+| Name | Roll no |
+|------|------|
+| Datta L | 231CS |
+| Atharv | 231CS |
+| Saksham | 231CS |
+| Rakshit | 231CS |
 
 
