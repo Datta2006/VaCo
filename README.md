@@ -16,11 +16,8 @@ The objective is to **minimize latency-based failure and system cost together**.
 
 ## Objective Function
 
-<p align="center">
-\[
-\min(\omega \cdot Cost + (1 - \omega) \cdot Service\ Failure\ Rate)
-\]
-</p>
+$\min(\omega \cdot Cost + (1 - \omega) \cdot Service\ Failure\ Rate)$
+
 Where:
 
 * **Cost** = server computation + caching + vehicle content access
