@@ -136,9 +136,9 @@ The algorithm gradually shifts from exploration → exploitation and converges t
 
 | Name | Roll no |
 |------|------|
-| Datta L | 231CS |
-| Atharv | 231CS |
-| Saksham | 231CS |
-| Rakshit | 231CS |
+| Datta L | 231CS119|
+| Atharv Vikas Rajurkar | 231CS215 |
+| Saksham Parmar | 231CS253 |
+| Rakshit Garg | 231CS247 |
 
 
