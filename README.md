@@ -1,70 +1,97 @@
-# MBAT Optimizer for Vehicle-Assisted Service Caching (VaCo)
+# VaCo – Vehicle-Assisted Service Caching Optimization
 
-This project implements the **Multi-Swarm Collaborative Bat Algorithm (MBAT)** to solve the joint optimization problem of **task offloading** and **service caching** in a **Vehicle-Assisted Vehicular Edge Computing (VEC)** network.
+### Using Multi-Swarm Bat Algorithm (MBAT)
 
-The core objective (inspired by *“Vehicle-Assisted Service Caching for Task Offloading in Vehicular Edge Computing”*) is to minimize a **System Efficiency** function — a weighted sum of the **Service Failure Rate** and the **System Cost**.
+This project implements a **Multi-Swarm Bat Algorithm (MBAT)** to optimize **task offloading and service caching** in **Vehicular Edge Computing (VEC)** systems.
 
----
+The goal is to determine:
 
-## 🚗 VaCo System Model
+* Where tasks should execute (local vehicle or VEC server)
+* Which services should be cached on servers
+* Whether content should be fetched from vehicles or servers
 
-### Components
-
-| Component             | Description                                             |
-| --------------------- | ------------------------------------------------------- |
-| **VEC Servers (J)**   | Roadside units with limited storage & compute resources |
-| **Vehicles (M)**      | Mobile users generating tasks & caching content         |
-| **Tasks (I)**         | Computation-intensive workloads                         |
-| **Content Types (K)** | Different service content types                         |
-| **MBAT Optimizer**    | Optimizes offloading & caching decisions                |
-
-### Decision Variables
-
-| Variable | Shape      | Meaning                                         |
-| -------- | ---------- | ----------------------------------------------- |
-| **P1**   | (Np, I)    | Task offloading: `1 = Local`, `2..J+1 = Server` |
-| **P2**   | (Np, J, K) | Server caching matrix (binary)                  |
-| **P3**   | (Np, I)    | Content retrieval: `1 = Vehicle`, `0 = Server`  |
+The objective is to **minimize latency-based failure and system cost together**.
 
 ---
 
-## 🎯 Optimization Objective
+## Objective Function
 
-Minimize:
+[
+\min \left( \omega \cdot \text{Cost} + (1 - \omega) \cdot \text{Service Failure Rate} \right)
+]
 
-System Efficiency = ω × Cost  +  (1 − ω) × Failure_Rate
+Where:
 
-* **Cost** — Usage of VEC + vehicle resources
-* **Failure Rate** — Tasks violating latency constraints
-* **ω** dynamically changes for balanced exploration (Pareto-based)
+* **Cost** = server computation + caching + vehicle content access
+* **Failure rate** = tasks missing latency deadline
 
----
-
-## 🦇 MBAT Algorithm Overview
-
-| Feature                        | Description                                  |
-| ------------------------------ | -------------------------------------------- |
-| **Multi-Swarm**                | P1, P2, P3 optimized as collaborative swarms |
-| **Global Collaboration**       | All swarms move toward the global-best       |
-| **Exploration → Exploitation** | Loudness & Pulse Rate adaptation             |
-| **Guided Mutation**            | Moves solutions toward global best           |
-| **Local Search**               | Maintains diversity (binary flips, shifts)   |
-| **Implicit Pareto Awareness**  | Multi-objective balance during selection     |
+The weight **ω changes dynamically** to balance cost & delay.
 
 ---
 
-## ▶️ How to Run
+## System Model
 
-### Requirements
+| Component     | Description                          |
+| ------------- | ------------------------------------ |
+| Vehicles      | Generate tasks and may hold content  |
+| Edge Servers  | Limited computing + caching capacity |
+| Tasks         | Require content and compute cycles   |
+| Content Types | Different services that tasks need   |
+
+---
+
+## Decision Variables
+
+| Variable | Meaning                                 |
+| -------- | --------------------------------------- |
+| **P1**   | Task offloading (local or which server) |
+| **P2**   | Which server caches which content       |
+| **P3**   | Content source (vehicle vs server)      |
+
+All optimized **jointly** inside MBAT.
+
+---
+
+## Algorithm Used: MBAT (Multi-Swarm Bat Algorithm)
+
+Main features:
+
+* Separate swarms for P1, P2, P3 decisions
+* Bats update using frequency, loudness, pulse rate
+* Local search + guided mutation around global best
+* Swarms collaborate by moving toward best solution
+* Dynamic weights to ensure good cost-delay balance
+
+Effect:
+
+* Better global search early
+* Better fine-tuning later
+* Reaches Pareto-balanced solution
+
+---
+
+## Parameters (Typical)
+
+| Parameter     | Value |
+| ------------- | ----- |
+| Population    | 30    |
+| Iterations    | 100   |
+| Tasks         | 50    |
+| Vehicles      | 100   |
+| Servers       | 3     |
+| Content Types | 10    |
+
+---
+
+## How to Run
+
+### Install Dependencies
 
 ```
 pip install numpy matplotlib
 ```
 
-### Execute
-
-Save code as `mbat_optimizer.py`
-Then run:
+### Execute Program
 
 ```
 python mbat_optimizer.py
@@ -72,52 +99,40 @@ python mbat_optimizer.py
 
 ---
 
-## 📈 Expected Output
+## Outputs Generated
 
-### Terminal Logs
+The script displays:
 
-* Iteration count
-* Best Efficiency, Cost, Failure Rate
+### Convergence graphs
 
-### Plots Produced
+* System efficiency reduction over iterations
+* Cost curve
+* Failure rate curve
 
-* Best & average system efficiency convergence
-* Cost convergence
-* Failure-rate convergence
-* Pareto front (Cost vs Failure Rate)
-* Task allocation & content retrieval bar graph
+### Pareto Trade-off Plot
 
-### Printed Solution
+* Shows the balance between cost & failure rate
 
-* Best System Efficiency
-* Final `P1`, `P2`, `P3` matrices
+### Strategy Visualization
 
----
+* Task offloading distribution (local vs server)
+* Content retrieval distribution (vehicle vs server)
 
-## 🧠 Result Interpretation
+### Final Metrics
 
-| Outcome                    | Meaning                                      |
-| -------------------------- | -------------------------------------------- |
-| **Low Cost, High Failure** | Mostly local execution, minimal caching      |
-| **High Cost, Low Failure** | Heavy server offloading + aggressive caching |
-| **Balanced Optimal**       | Pareto-optimal mix found by MBAT             |
-
-Goal: Achieve lowest **System Efficiency** score by balancing cost & failure risk.
+* Best efficiency value
+* Final cost & failure probability
 
 ---
 
-## 📚 Citation
+## Interpretation
 
-If using this for research:
+| Scenario               | Meaning                              |
+| ---------------------- | ------------------------------------ |
+| Low cost, high failure | Mostly local computing, less caching |
+| High cost, low failure | More server help + caching usage     |
+| Balanced optimum       | Best compromise found by MBAT        |
 
-*Vehicle-Assisted Service Caching for Task Offloading in Vehicular Edge Computing*
+The algorithm gradually shifts from exploration → exploitation and converges to a **balanced VEC strategy**.
 
----
 
-## ⭐ Contribution
-
-Pull requests are welcome — feel free to improve the MBAT model or VaCo simulation!
-
----
-
-Let me know if you want a **shorter version**, **IEEE-style abstract**, or **LaTeX README** for GitHub/Thesis!
