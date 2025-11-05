@@ -91,7 +91,7 @@ pip install numpy matplotlib
 ### Execute Program
 
 ```
-python mbat_optimizer.py
+python main.py
 ```
 
 ---
