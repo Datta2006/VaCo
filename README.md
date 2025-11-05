@@ -101,7 +101,7 @@ python mbat_optimizer.py
 
 ## Outputs Generated
 
-The script displays:
+<img src=output/1.jpeg>
 
 ### Convergence graphs
 
